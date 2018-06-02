@@ -1,0 +1,28 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/share/npm/bin/npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--scripts-prepend-node-path=auto' ]
+2 info using npm@3.5.2
+3 info using node@v9.11.1
+4 verbose stack Error: Cannot find module 'ansi'
+4 verbose stack     at Function.Module._resolveFilename (internal/modules/cjs/loader.js:548:15)
+4 verbose stack     at Function.Module._load (internal/modules/cjs/loader.js:475:25)
+4 verbose stack     at Module.require (internal/modules/cjs/loader.js:598:17)
+4 verbose stack     at require (internal/modules/cjs/helpers.js:11:18)
+4 verbose stack     at Object.<anonymous> (/usr/share/npm/lib/ls.js:15:13)
+4 verbose stack     at Module._compile (internal/modules/cjs/loader.js:654:30)
+4 verbose stack     at Object.Module._extensions..js (internal/modules/cjs/loader.js:665:10)
+4 verbose stack     at Module.load (internal/modules/cjs/loader.js:566:32)
+4 verbose stack     at tryModuleLoad (internal/modules/cjs/loader.js:506:12)
+4 verbose stack     at Function.Module._load (internal/modules/cjs/loader.js:498:3)
+5 verbose cwd /home/petrus/WebstormProjects/NodeDrinkShop
+6 error Linux 4.15.0-22-generic
+7 error argv "/usr/local/bin/node" "/usr/share/npm/bin/npm-cli.js" "install" "--scripts-prepend-node-path=auto"
+8 error node v9.11.1
+9 error npm  v3.5.2
+10 error code MODULE_NOT_FOUND
+11 error Cannot find module 'ansi'
+12 error If you need help, you may report this error at:
+12 error     <https://github.com/npm/npm/issues>
+13 verbose exit [ 1, true ]
