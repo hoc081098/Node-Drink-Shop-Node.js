@@ -30,18 +30,60 @@ const Drink = module.exports = mongoose.model('drinks', schema, 'drinks');
 
 const projection = {__v: 0};
 
-module.exports.getDrink = async (menu_id, phone) => {
+/**
+ * @param {Number} menu_id,
+ * @param {String} phone,
+ * @param {String} name,
+ * @param {Number} min_price: ,
+ * @param {Number} max_price: ,
+ * @param {Number} min_star: ,
+ * @param {Number} max_star: ,
+ * @param sort_name values allowed are 'asc', 'desc', 'ascending', 'descending', '1', and '-1'.
+ * @param sort_price values allowed are 'asc', 'desc', 'ascending', 'descending', '1', and '-1'.
+ * @param sort_star values allowed are 'asc', 'desc', 'ascending', 'descending', '1', and '-1'.
+ * @return array of Drink models
+ */
+module.exports.getDrink = async (menu_id, phone, name, min_price, max_price, min_star, max_star, sort_name, sort_price, sort_star) => {
     const conditions = {};
+
     if (menu_id) conditions.menuId = menu_id;
 
     if (phone) {
         const user = await User.getUserByPhone(phone);
-        conditions._id = {$in : user.staredDrinkIds};
+        conditions._id = {$in: user.staredDrinkIds};
     }
 
+    if (name) {
+        conditions.name = {$regex: new RegExp(name), $options: 'i'};
+    }
+
+    if (max_price || min_price) {
+        conditions.$and = conditions.$and || [];
+        if (max_price)
+            conditions.$and.push({price: {$lte: max_price}});
+        if (min_price)
+            conditions.$and.push({price: {$gte: min_price}});
+    }
+
+    if (max_star || min_star) {
+        conditions.$and = conditions.$and || [];
+        if (max_star)
+            conditions.$and.push({starCount: {$lte: max_star}});
+        if (min_star)
+            conditions.$and.push({starCount: {$gte: min_star}});
+    }
+
+    const sort = {sort: {}};
+    if (sort_name)
+        sort.sort.name = sort_name;
+    if (sort_price)
+        sort.sort.price = sort_price;
+    if (sort_star)
+        sort.sort.starCount = sort_star;
+
     console.log(conditions);
-    return Drink.find(conditions, projection)
-        .sort({price: 'asc'})
+    console.log(sort);
+    return Drink.find(conditions, projection, sort)
         .exec();
 };
 

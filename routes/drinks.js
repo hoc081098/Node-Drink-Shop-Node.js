@@ -6,13 +6,38 @@ const User = require('../models/user_model');
 
 const Fawn = require('../config/fawn');
 
-/* GET all drink, order by price ascending
- * if menu_id is defined, then filter drinks have menu_id equals menu_id
+/**
+ * GET drinks
  */
 router.get('/', async (req, res) => {
+    //`asc`, `desc`
     try {
-        const {menu_id, phone} = req.query;
-        let drinks = await Drink.getDrink(menu_id, phone);
+        const {
+            menu_id,
+            phone,
+            name,
+            min_price,
+            max_price,
+            min_star,
+            max_star,
+            sort_name,
+            sort_price,
+            sort_star,
+        } = req.query;
+
+        console.log(req.query);
+        let drinks = await Drink.getDrink(
+            menu_id,
+            phone,
+            name,
+            min_price,
+            max_price,
+            min_star,
+            max_star,
+            sort_name,
+            sort_price,
+            sort_star
+        );
         res.status(200).json(drinks);
     } catch (e) {
         res.status(500).json({message: e.message});
