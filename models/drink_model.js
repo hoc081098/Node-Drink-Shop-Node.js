@@ -5,7 +5,7 @@ const User = require('../models/user_model');
 const schema = new mongoose.Schema({
     name: String,
     imageUrl: String,
-    price: String,
+    price: Number,
     menuId: {
         type: Number,
         index: true
