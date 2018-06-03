@@ -78,10 +78,7 @@ router.post('/star', async (req, res) => {
 
         const drink = countDrink[0];
         return res.status(200).json({
-            name: drink.name,
-            imageUrl: drink.imageUrl,
-            price: drink.price,
-            menuId: drink.menuId,
+            ...drink.toObject(),
             stars: [...drink.stars, phone],
             starCount: drink.starCount + 1
         });
@@ -116,13 +113,11 @@ router.delete('/star', async (req, res) => {
 
         const drink = countDrink[0];
         return res.status(200).json({
-            name: drink.name,
-            imageUrl: drink.imageUrl,
-            price: drink.price,
-            menuId: drink.menuId,
+            ...drink.toObject(),
             stars: (() => {
-                drink.stars.splice(drink.stars.indexOf(phone), 1);
-                return drink.stars;
+                const stars = drink.stars;
+                let index = stars.indexOf(phone);
+                return [...stars.slice(0, index), ...stars.slice(index + 1)];
             })(),
             starCount: drink.starCount - 1
         });
