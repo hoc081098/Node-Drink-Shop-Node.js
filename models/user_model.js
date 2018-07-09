@@ -30,10 +30,6 @@ const schema = new mongoose.Schema({
         type: String,
         default: null
     },
-    staredDrinkIds: {
-        type: [Number],
-        default: [],
-    }
 });
 
 const User = module.exports = mongoose.model('users', schema, 'users');
