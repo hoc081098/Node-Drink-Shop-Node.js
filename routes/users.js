@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 
 const Storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/images');
+        cb(null, './public/images');
     },
     filename: (req, file, cb) => {
         const fileName = req.params.phone + path.extname(file.originalname);
