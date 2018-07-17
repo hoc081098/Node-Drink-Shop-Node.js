@@ -5,7 +5,10 @@ const User = require('../models/user_model');
 const schema = new mongoose.Schema({
   name: String,
   imageUrl: String,
-  price: Number,
+  price: {
+    type: Number,
+    index: true
+  },
   menuId: {
     type: Number,
     index: true
@@ -20,7 +23,8 @@ const schema = new mongoose.Schema({
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value'
     },
-    default: 0
+    default: 0,
+    index: true
   }
 });
 
@@ -41,6 +45,7 @@ const projection = { __v: 0 };
  * @param sort_name values allowed are 'asc', 'desc', 'ascending', 'descending', '1', and '-1'.
  * @param sort_price values allowed are 'asc', 'desc', 'ascending', 'descending', '1', and '-1'.
  * @param sort_star values allowed are 'asc', 'desc', 'ascending', 'descending', '1', and '-1'.
+ * @param {Number} limit,
  * @return array of Drink models
  */
 module.exports.getDrink = async (
@@ -53,8 +58,11 @@ module.exports.getDrink = async (
   max_star,
   sort_name,
   sort_price,
-  sort_star
+  sort_star,
+  limit
 ) => {
+  console.log(limit);
+  
   const conditions = {};
 
   if (menu_id) conditions.menuId = menu_id;
@@ -68,25 +76,32 @@ module.exports.getDrink = async (
   }
 
   if (max_price || min_price) {
-    conditions.$and = conditions.$and || [];
+    conditions.$and = [];
     if (max_price) conditions.$and.push({ price: { $lte: max_price } });
     if (min_price) conditions.$and.push({ price: { $gte: min_price } });
   }
 
   if (max_star || min_star) {
-    conditions.$and = conditions.$and || [];
+    conditions.$and = [];
     if (max_star) conditions.$and.push({ starCount: { $lte: max_star } });
     if (min_star) conditions.$and.push({ starCount: { $gte: min_star } });
   }
 
-  const sort = { sort: {} };
-  if (sort_name) sort.sort.name = sort_name;
-  if (sort_price) sort.sort.price = sort_price;
-  if (sort_star) sort.sort.starCount = sort_star;
+  const sort = {};
+  if (sort_name) sort.name = sort_name;
+  if (sort_price) sort.price = sort_price;
+  if (sort_star) sort.starCount = sort_star;
 
-  console.log(conditions);
-  console.log(sort);
-  return Drink.find(conditions, projection, sort).exec();
+  const query = Drink.find(conditions, projection);
+  if (Object.keys(sort).length !== 0) {
+    query.sort(sort);
+  }
+  if (limit) {
+    limit = parseInt(limit);
+    query.limit(limit);
+  }
+
+  return query.exec();
 };
 
 module.exports.getDrinkById = async drinkId => {
