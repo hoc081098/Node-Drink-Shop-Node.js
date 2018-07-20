@@ -1,0 +1,30 @@
+{
+  "price": 15,
+  "comment": "This is comment",
+  "detail": [
+    {
+      "name": "Tea test",
+      "drinkId": "1",
+      "imageUrl": "imageUrl",
+      "number": 1,
+      "comment": "tea comment",
+      "cupSize": "M",
+      "sugar": 100,
+      "ice": 100,
+      "price": 10
+    },
+    {
+      "name": "Tea test2",
+      "drinkId": "1",
+      "imageUrl": "imageUrl",
+      "number": 1,
+      "comment": "tea comment",
+      "cupSize": "M",
+      "sugar": 100,
+      "ice": 100,
+      "price": 5
+    }
+  ],
+  "phone": "1663438135",
+  "address": "Quang Tri"
+}
