@@ -85,9 +85,44 @@ function onListening() {
   debug('Listening on ' + bind);
   console.log('Listening on ' + bind);
 
-  addData();
+  //addData();
 }
 
 function addData() {
-    
+  const Store = require('../models/store.model');
+  const datas = [
+    {
+      name: 'Store 3rd',
+      lat: 16.718406,
+      lng: 107.343625
+    },
+    {
+      name: 'Store 1st',
+      lat: 16.720057,
+      lng: 107.344931
+    },
+    {
+      name: 'Store 4th',
+      lat: 16.72259,
+      lng: 107.340773
+    },
+    {
+      name: 'Store 2nd',
+      lat: 16.719566,
+      lng: 107.345774
+    }
+  ];
+  Promise.all(
+    datas.map(d =>
+      new Store({
+        name: d.name,
+        loc: {
+          type: 'Point',
+          coordinates: [d.lng, d.lat]
+        }
+      }).save()
+    )
+  )
+    .then(r => console.log('Done ', r.length))
+    .catch(console.log);
 }
