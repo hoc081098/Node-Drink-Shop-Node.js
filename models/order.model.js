@@ -38,9 +38,20 @@ const schema = new mongoose.Schema({
     required: true
   },
   status: {
-    default: 'NEW',
+    default: 'PLACED',
     type: String,
-    enum: ['CANCELED', 'NEW', 'PROCESSING', 'SHIPPING', 'SHIPPED']
+    enum: ['CANCELED', 'PLACED', 'PROCESSING', 'SHIPPING', 'SHIPPED']
+  },
+  createdAt: {
+    type: Date,
+    min: new Date(1970, 1, 1, 0, 0, 0, 0),
+    default: Date.now,
+    required: true
+  },
+  updatedAt: {
+    type: Date,
+    min: new Date(1970, 1, 1, 0, 0, 0, 0),
+    default: Date.now
   }
 });
 
