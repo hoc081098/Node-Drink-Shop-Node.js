@@ -27,12 +27,12 @@ module.exports.getOrder = async (req, res) => {
     return res.status(422).json({
       message:
         'Status should be either ' +
-        ['CANCELED', 'PLACED', 'PROCESSING', 'SHIPPING', 'SHIPPED'].join('or')
+        ['CANCELED', 'PLACED', 'PROCESSING', 'SHIPPING', 'SHIPPED'].join(' or ')
     });
   }
 
   try {
-    const docs = await Order.find({ status: status })
+    const docs = await Order.find({ status: status }, { updatedAt: 0, __v: 0 })
       .sort({ createdAt: -1 })
       .exec();
     res.status(200).json(docs);
