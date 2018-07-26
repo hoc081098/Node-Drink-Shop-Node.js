@@ -10,7 +10,9 @@ module.exports.createNewOrder = async (req, res) => {
   }
 
   try {
-    const order = await new Order(req.body).save();
+    const order = await new Order(
+      Object.assign(req.body, { createdAt: Date.now() })
+    ).save();
     res.status(200).json(order);
   } catch (e) {
     res.status(e.status).json({ message: e.message });
@@ -18,7 +20,10 @@ module.exports.createNewOrder = async (req, res) => {
 };
 
 module.exports.getOrder = async (req, res) => {
-  const { status } = req.query;
+  const { status, phone } = req.query;
+  if (!phone) {
+    return res.status(422).json({ message: 'Missing phone' });
+  }
   if (
     ['CANCELED', 'PLACED', 'PROCESSING', 'SHIPPING', 'SHIPPED'].indexOf(
       status
@@ -32,7 +37,10 @@ module.exports.getOrder = async (req, res) => {
   }
 
   try {
-    const docs = await Order.find({ status: status }, { updatedAt: 0, __v: 0 })
+    const docs = await Order.find(
+      { status: status, phone: phone },
+      { updatedAt: 0, __v: 0 }
+    )
       .sort({ createdAt: -1 })
       .exec();
     res.status(200).json(docs);
