@@ -31,7 +31,7 @@ const schema = new mongoose.Schema({
     trim: true,
     maxlength: 20,
     required: true,
-    indexes: true
+    index: true
   },
   address: {
     type: String,
