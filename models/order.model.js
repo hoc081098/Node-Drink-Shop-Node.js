@@ -30,7 +30,8 @@ const schema = new mongoose.Schema({
     type: String,
     trim: true,
     maxlength: 20,
-    required: true
+    required: true,
+    indexes: true
   },
   address: {
     type: String,
@@ -40,7 +41,8 @@ const schema = new mongoose.Schema({
   status: {
     default: 'PLACED',
     type: String,
-    enum: ['CANCELED', 'PLACED', 'PROCESSING', 'SHIPPING', 'SHIPPED']
+    enum: ['CANCELED', 'PLACED', 'PROCESSING', 'SHIPPING', 'SHIPPED'],
+    index: true
   },
   createdAt: {
     type: Date,

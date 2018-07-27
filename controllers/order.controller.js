@@ -15,7 +15,7 @@ module.exports.createNewOrder = async (req, res) => {
     ).save();
     res.status(200).json(order);
   } catch (e) {
-    res.status(e.status).json({ message: e.message });
+    res.status(500).json({ message: e.message });
   }
 };
 
@@ -45,6 +45,20 @@ module.exports.getOrder = async (req, res) => {
       .exec();
     res.status(200).json(docs);
   } catch (e) {
-    res.status(e.status).json({ message: e.message });
+    res.status(500).json({ message: e.message });
   }
+};
+
+module.exports.cancelOrder = (req, res) => {
+  Order.findByIdAndUpdate(
+    req.body._id,
+    { status: 'CANCELED' },
+    { new: true },
+    (err, docs) => {
+      if (err) {
+        return res.status(500).json({ message: err.message });
+      }
+      res.status(200).json(docs);
+    }
+  );
 };
